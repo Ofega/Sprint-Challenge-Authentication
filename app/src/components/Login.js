@@ -7,7 +7,7 @@ const newUser = {
     password: ''
 }
 
-const Register = (props) => {
+const Login = (props) => {
     const [ user, setUser ] = useState(newUser)
     const { username, password } = user;
 
@@ -20,10 +20,10 @@ const Register = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(baseUrl + 'api/auth/register')
-        axios.post(baseUrl + 'api/auth/register', user)
-            .then(() => {
-                props.history.push('/login');
+        axios.post(baseUrl + 'api/auth/login', user)
+            .then(res => {
+                localStorage.setItem('token', res.data.token)
+                props.history.push('/');
             })
             .catch(err => {
                 console.log(err)
@@ -44,10 +44,10 @@ const Register = (props) => {
                 <input type="password" name="password" onChange={handleChange} value={password} placeholder="Type your password here..." />
             </div>
 
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
         </form>
     )
   
 }
 
-export default Register;
+export default Login;
