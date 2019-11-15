@@ -38,7 +38,7 @@ router.post('/login', validateCredentials, (req, res) => {
 //Middleware
 function validateCredentials(req, res, next) {
   const { username, password } = req.body;
-  if (!username || !password || !department) {
+  if (!username || !password) {
     res.status(401).json({ message: "username and password required" });
   } else {
     next();
