@@ -8,12 +8,22 @@ router.post('/register', validateCredentials, (req, res) => {
   const { username, password } = req.body;
   const hash = bcrypt.hashSync(password, 11);
 
-  db.addUser({ username, password: hash })
-    .then((user) => {
-      res.status(201).json(user);
+  db.getUser({ username })
+    .then(user => {
+      if (user) {
+        res.status(401).json({ message: "User already exists" });
+      } else {
+        db.addUser({ username, password: hash })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch(error => {
+            res.status(500).json(error);
+          });
+      }
     })
-    .catch(error => {
-      res.status(500).json(error);
+    .catch(() => {
+      res.status(401).json({ message: "No user found" });
     });
 });
 

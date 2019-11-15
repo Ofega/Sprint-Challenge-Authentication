@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -20,7 +21,6 @@ const Register = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(baseUrl + 'api/auth/register')
         axios.post(baseUrl + 'api/auth/register', user)
             .then(() => {
                 props.history.push('/login');
@@ -36,15 +36,16 @@ const Register = (props) => {
         <form onSubmit={handleSubmit}>
             <div>
                 <label>Username</label>
-                <input type="text" name="username" onChange={handleChange} value={username} placeholder="Type your username here..." />
+                <input type="text" name="username" onChange={handleChange} value={username} placeholder="Type your username here..." required />
             </div>
 
             <div>
                 <label>Password</label>
-                <input type="password" name="password" onChange={handleChange} value={password} placeholder="Type your password here..." />
+                <input type="password" name="password" onChange={handleChange} value={password} placeholder="Type your password here..." required />
             </div>
 
             <button type="submit">Register</button>
+            <Link to="/login">Already a User? Login</Link>
         </form>
     )
   
