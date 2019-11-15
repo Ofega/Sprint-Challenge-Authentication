@@ -39,5 +39,17 @@ describe('auth-router', () => {
                     expect(res.status).toBe(401);
                 })
         });
+        it('should tell user required fields if invalid', () => {
+            const existing_user = {
+                "username": "admin"
+            }
+
+            const expectedBody = { message: "username and password required" };
+            return request(server).post('/api/auth/login')
+                .send(existing_user)
+                .then((res) => {
+                    expect(res.body).toEqual(expectedBody);
+                })
+        });
     });
 });
