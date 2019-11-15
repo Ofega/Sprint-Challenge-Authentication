@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const db = require('./auth-model');
 
-router.post('/register', (req, res) => {
+router.post('/register', validateCredentials, (req, res) => {
   const { username, password } = req.body;
   const hash = bcrypt.hashSync(password, 11);
 
@@ -17,7 +17,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', validateCredentials, (req, res) => {
   const { username, password } = req.body;
 
   db.getUser({ username })
@@ -33,6 +33,17 @@ router.post('/login', (req, res) => {
       res.status(401).json({ message: "No user found" });
     });
 });
+
+
+//Middleware
+function validateCredentials(req, res, next) {
+  const { username, password } = req.body;
+  if (!username || !password || !department) {
+    res.status(401).json({ message: "username and password required" });
+  } else {
+    next();
+  }
+}
 
 function generateToken(user) {
   return jwt.sign(
